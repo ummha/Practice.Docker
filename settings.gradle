@@ -1,1 +1,4 @@
 rootProject.name = 'docker'
+include 'api-market'
+include 'api-delivery'
+

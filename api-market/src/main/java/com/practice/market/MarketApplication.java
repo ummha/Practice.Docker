@@ -1,13 +1,11 @@
-package com.example.docker;
+package com.practice.market;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
-
+public class MarketApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(MarketApplication.class, args);
     }
-
 }
