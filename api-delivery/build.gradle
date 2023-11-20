@@ -4,3 +4,24 @@ plugins {
 
 dependencies {
 }
+
+jar.enabled =false
+bootJar.enabled = true
+
+bootJar {
+    archiveExtension = 'jar'
+    archiveBaseName = 'api-delivery'
+}
+
+tasks.register('copyDeps', Copy) {
+    print """
+    ##> :api:delivery - copyDeps  :: $sourceSets.main.runtimeClasspath
+    """
+    from(sourceSets.main.runtimeClasspath)
+    includeEmptyDirs = false
+    into('/opt/app/api-delivery/classes/')
+}
+
+tasks.register('cleanDeps', Delete) {
+    delete '/opt/app/api-delivery/classes/'
+}

@@ -1,0 +1,78 @@
+services:
+  builder:
+    image: azul/zulu-openjdk-alpine:17-latest
+    volumes:
+      - .:/opt/build
+      - type: volume
+        source: app_home
+        target: /opt/app
+        volume:
+          nocopy: true
+      - type: volume
+        source: gradle_home
+        target: /opt/.gradle
+    working_dir: /opt/build
+    command: "/opt/build/gradlew copyDeps --gradle-user-home=/opt/.gradle -x test"
+#  cleanBuilder:
+#    image: azul/zulu-openjdk-alpine:17-latest
+#    volumes:
+#      - .:/opt/build
+#      - type: volume
+#        source: app_home
+#        target: /opt/app
+#        volume:
+#          nocopy: true
+#      - type: volume
+#        source: gradle_home
+#        target: /opt/.gradle
+#    working_dir: /opt/build
+#    command: "/opt/build/gradlew cleanDeps copyDeps --gradle-user-home=/opt/.gradle -x test"
+  nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 5005:5005
+      - 5006:5006
+      - 5007:5007
+  redis:
+    image: redis:latest
+  api-delivery:
+    build:
+      context: api-delivery
+      dockerfile: Dockerfile
+    volumes:
+      - app_home:/opt/app
+    depends_on:
+      nginx:
+        condition: service_started
+      builder:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    restart: always
+  api-market:
+    build:
+      context: api-market
+      dockerfile: Dockerfile
+    volumes:
+      - app_home:/opt/app
+    depends_on:
+      nginx:
+        condition: service_started
+      builder:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    restart: always
+volumes:
+  gradle_home:
+#    name: practice-docker_gradle_home
+  app_home:
+#    name: practice-docker_app_home
+
+#    docker-compose up을 통해서 빌드 후 애플리케이션을 동작하고자 할때 사용
+#      builder:
+#        condition: service_completed_successfully

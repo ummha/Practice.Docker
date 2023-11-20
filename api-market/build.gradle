@@ -4,3 +4,24 @@ plugins {
 
 dependencies {
 }
+
+jar.enabled =false
+bootJar.enabled = true
+
+bootJar {
+    archiveExtension = 'jar'
+    archiveBaseName = 'api-market'
+}
+
+tasks.register('copyDeps', Copy) {
+    print """
+    ##> :api:market - copyDeps  :: $sourceSets.main.runtimeClasspath
+    """
+    from(sourceSets.main.runtimeClasspath)
+    includeEmptyDirs = false
+    into('/opt/app/api-market/classes/')
+}
+
+tasks.register('cleanDeps', Delete) {
+    delete '/opt/app/api-market/classes/'
+}
