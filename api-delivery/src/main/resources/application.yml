@@ -1,3 +1,12 @@
 server:
   servlet:
     context-path: /delivery
+    session:
+      cookie:
+        path: /
+
+spring:
+  data:
+    redis:
+      host: redis
+      port: 6379
