@@ -13,20 +13,6 @@ services:
         target: /opt/.gradle
     working_dir: /opt/build
     command: "/opt/build/gradlew copyDeps --gradle-user-home=/opt/.gradle -x test"
-#  cleanBuilder:
-#    image: azul/zulu-openjdk-alpine:17-latest
-#    volumes:
-#      - .:/opt/build
-#      - type: volume
-#        source: app_home
-#        target: /opt/app
-#        volume:
-#          nocopy: true
-#      - type: volume
-#        source: gradle_home
-#        target: /opt/.gradle
-#    working_dir: /opt/build
-#    command: "/opt/build/gradlew cleanDeps copyDeps --gradle-user-home=/opt/.gradle -x test"
   nginx:
     image: nginx
     restart: always

@@ -14,12 +14,20 @@ bootJar {
 }
 
 tasks.register('copyDeps', Copy) {
-    print """
-    ##> :api:delivery - copyDeps  :: $sourceSets.main.runtimeClasspath
-    """
+    dependsOn 'cleanDeps'
+    doFirst {
+        println """
+        ##> START:api:delivery - copyDeps  :: $sourceSets.main.runtimeClasspath
+        """
+    }
     from(sourceSets.main.runtimeClasspath)
     includeEmptyDirs = false
     into('/opt/app/api-delivery/classes/')
+    doLast {
+        println """
+        ##> DONE:api:delivery - copyDeps  :: $sourceSets.main.runtimeClasspath
+        """
+    }
 }
 
 tasks.register('cleanDeps', Delete) {

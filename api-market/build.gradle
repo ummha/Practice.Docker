@@ -14,12 +14,20 @@ bootJar {
 }
 
 tasks.register('copyDeps', Copy) {
-    print """
-    ##> :api:market - copyDeps  :: $sourceSets.main.runtimeClasspath
-    """
+    dependsOn 'cleanDeps'
+    doFirst {
+        println """
+        ##> START:api:market - copyDeps  :: $sourceSets.main.runtimeClasspath
+        """
+    }
     from(sourceSets.main.runtimeClasspath)
     includeEmptyDirs = false
     into('/opt/app/api-market/classes/')
+    doLast {
+        println """
+        ##> DONE:api:market - copyDeps  :: $sourceSets.main.runtimeClasspath
+        """
+    }
 }
 
 tasks.register('cleanDeps', Delete) {
